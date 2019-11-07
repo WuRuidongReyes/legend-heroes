@@ -1,0 +1,35 @@
+.login-container {
+    height: -webkit-fill-available;
+    width: 100%;
+    display: flex;
+    background: yellowgreen;
+}
+.login-board {
+    height: 300px;
+    width: 500px;
+    margin: auto;
+    flex-flow: column;
+    background: rgba(256, 256, 256, 0.5);
+    
+}
+@login-form-width: 300px;
+@input-line-height: 40px;
+.login-form {
+    width: @login-form-width;
+    margin: auto;
+}
+.input-border {
+    width: @login-form-width;
+    background: rgba(256, 256, 256, 0.5);
+    border: solid 1px;
+    border-radius: 3px;
+    line-height: @input-line-height;
+    margin: 10px 0px;
+}
+input {
+    border-radius: 3px;
+    border: solid 0px;
+    line-height: @input-line-height;
+    padding: 0px 10px;
+    background: rgba(256, 256, 256, 0);
+}
