@@ -3,17 +3,19 @@
     <h2 class="login-title">账号密码登录</h2>
     <div class="login-form">
       <div class="input-border">
-        <input [value]="userID" placeholder="用户账号">
-        <span class="input-cleanner"><i class="fa fa-times-circle"></i></span>
+        <input [(ngModel)]="userID"  id="id" placeholder="用户账号">
+        <span class="input-cleanner" *ngIf="userID.length">
+          <i class="fa fa-times-circle" (click)="cleanID()"></i>
+        </span>
       </div>
       <div class="input-border">
-        <input [value]="password" type='password' placeholder="密码">
+        <input [(ngModel)]="password" id='password' type='password' placeholder="密码">
       </div>
-      <button class="login-button">登 录</button>
+      <button class="login-button" (click)="login()">登 录</button>
     </div>
-    <div class='login-hint'>
+    <div class='login-hint' *ngIf='errorHint'>
       <i class="fa fa-exclamation-circle"></i>
-      <span> 错误提示</span>
+      <span>{{errorHint}}</span>
     </div>
   </div>
 </div>
