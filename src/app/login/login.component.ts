@@ -10,6 +10,7 @@ export class LoginComponent implements OnInit {
   userID = '';
   password = '';
   errorHint = '';
+  imageURL = '../../assets/images/login/senna_1920_1200.jpg';
   constructor() { }
 
   ngOnInit() {
