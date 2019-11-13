@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { style, animate, AnimationBuilder } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
@@ -15,18 +16,19 @@ export class LoginComponent implements OnInit {
     '../../assets/images/login/64138434_p0.jpg'
   ];
   i = 0;
-  constructor() { }
+  container: HTMLElement;
+  constructor(private _builder: AnimationBuilder) { }
 
   ngOnInit() {
+    this.container = document.getElementById('container');
+    this.container.style.backgroundImage = `url(${this.imageURL[0]})`;
     setInterval(() => {
-      // document.getElementById('container').style.backgroundImage = `url(${this.imageURL[this.i]})`;
-      // this.i++;
-      // this.i %= this.imageURL.length;
-      // console.log(this.i);
-    }, 2000);
-    document.getElementById('container').style.backgroundImage = `url(${this.imageURL[0]})`;
+      this.i++;
+      this.i %= this.imageURL.length;
+      this._buildAnimation().create(this.container).play();
+    }, 10000);
     console.log(window.innerWidth);
-    console.log(window.outerWidth);
+    console.log(window.innerHeight);
   }
 
   cleanID() {
@@ -52,5 +54,11 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.errorHint = '';
+  }
+
+  private _buildAnimation() {
+    return this._builder.build([
+        animate('500ms ease-out', style({backgroundImage: `url(${this.imageURL[this.i]})`}))
+    ]);
   }
 }
