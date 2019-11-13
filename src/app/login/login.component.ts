@@ -17,17 +17,20 @@ export class LoginComponent implements OnInit {
     '../../assets/images/login/64138434_p0.jpg'
   ];
   i = 0;
-  container: HTMLElement;
+  bgShow: HTMLElement;
+  bgTransition: HTMLElement;
   constructor(private _builder: AnimationBuilder) { }
 
   ngOnInit() {
-    this.container = document.getElementById('container');
-    this.container.style.backgroundImage = `url(${this.imageURL[0]})`;
+    this.bgShow = document.getElementById('bg-show');
+    this.bgTransition = document.getElementById('bg-transition');
+    this.bgShow.style.backgroundImage = `url(${this.imageURL[0]})`;
     setInterval(() => {
-      const j = this.i;
       this.i++;
       this.i %= this.imageURL.length;
-      this._buildAnimation().create(this.container).play();
+      this.bgTransition.style.backgroundImage = `url(${this.imageURL[this.i]})`;
+      this._buildAnimation().create(this.bgShow).play();
+      this.bgShow.style.backgroundImage = `url(${this.imageURL[this.i]})`;
     }, 2000);
   }
 
@@ -58,13 +61,7 @@ export class LoginComponent implements OnInit {
 
   private _buildAnimation() {
     return this._builder.build([
-      animate('1000ms ease-out',
-        keyframes([
-          style({ opacity: 0.2, offset: 0.2 }),
-          style({ backgroundImage: `url(${this.imageURL[this.i]})`, opacity: 0.2, offset: 0.21 }),
-          style({ opacity: 1, offset: 1 }),
-        ])
-      )
+      animate('1000ms ease-out', style({opacity: 0}))
     ]);
   }
 }

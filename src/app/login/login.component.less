@@ -1,5 +1,5 @@
 .login-container {
-    height: -webkit-fill-available;
+    height: 100vh;
     width: 100%;
     display: flex;
     background-position: center;
@@ -11,7 +11,7 @@
     margin: auto;
     flex-flow: column;
     background: rgba(256, 256, 256, 0.5);
-    
+    z-index: 2000;
 }
 .login-title {
     margin: 20px 0px;
@@ -77,4 +77,11 @@ input {
         vertical-align: middle;
         line-height: 30px;
     }
+}
+.bg-transition {
+    height: 100vh;
+    width: inherit;
+    background-position: center;
+    background-size: cover;
+    position: fixed;
 }
