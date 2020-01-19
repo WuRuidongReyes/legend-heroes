@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { style, animate, AnimationBuilder, keyframes } from '@angular/animations';
+import { style, animate, AnimationBuilder, keyframes, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less']
+  styleUrls: ['./login.component.less'],
+  animations: [
+    trigger('changeBk', [])
+  ]
 })
 export class LoginComponent implements OnInit {
 
@@ -21,16 +24,18 @@ export class LoginComponent implements OnInit {
   bgTransition: HTMLElement;
   constructor(private _builder: AnimationBuilder) { }
 
-  ngOnInit() {
+  ngOnInit() {  // 初始化背景图片
     this.bgShow = document.getElementById('bg-show');
     this.bgTransition = document.getElementById('bg-transition');
     this.bgShow.style.backgroundImage = `url(${this.imageURL[0]})`;
+    this.bgTransition.style.backgroundImage = `url(${this.imageURL[1]})`;
+    // 背景切换策略：先做动画-前景切图-前景显示-背景切图
+    this._buildAnimation().create(this.bgShow).play();
+    // this.bgShow.style.backgroundImage = `url(${this.imageURL[1]})`;
+    // this.bgShow.style.opacity = '1';
+    // this.bgTransition.style.backgroundImage = `url(${this.imageURL[2]})`;
     setInterval(() => {
-      this.i++;
-      this.i %= this.imageURL.length;
-      this.bgTransition.style.backgroundImage = `url(${this.imageURL[this.i]})`;
-      this._buildAnimation().create(this.bgShow).play();
-      this.bgShow.style.backgroundImage = `url(${this.imageURL[this.i]})`;
+      this.changeBg();
     }, 2000);
   }
 
@@ -59,9 +64,22 @@ export class LoginComponent implements OnInit {
     this.errorHint = '';
   }
 
+  changeBg() {
+    this._buildAnimation().create(this.bgShow).play();
+    this.i++;
+    this.i %= this.imageURL.length;
+    this.bgShow.style.backgroundImage = `url(${this.imageURL[this.i]})`;
+    this.bgShow.style.opacity = '1';
+    this.i++;
+    this.i %= this.imageURL.length;
+    this.bgTransition.style.backgroundImage = `url(${this.imageURL[2]})`;
+  }
+
   private _buildAnimation() {
     return this._builder.build([
-      animate('1000ms ease-out', style({opacity: 0}))
+      animate('1000ms ease-out', style({
+        opacity: 0
+      }))
     ]);
   }
 }
