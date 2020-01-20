@@ -19,9 +19,11 @@ export class LoginComponent implements OnInit {
     '../../assets/images/login/senna_1920_1200.jpg',
     '../../assets/images/login/64138434_p0.jpg'
   ];
-  i = 0;
+  i = 1;
   bgShow: HTMLElement;
   bgTransition: HTMLElement;
+  bgChangeAnimate: any;
+  // tslint:disable-next-line:variable-name
   constructor(private _builder: AnimationBuilder) { }
 
   ngOnInit() {  // 初始化背景图片
@@ -29,14 +31,31 @@ export class LoginComponent implements OnInit {
     this.bgTransition = document.getElementById('bg-transition');
     this.bgShow.style.backgroundImage = `url(${this.imageURL[0]})`;
     this.bgTransition.style.backgroundImage = `url(${this.imageURL[1]})`;
-    // 背景切换策略：先做动画-前景切图-前景显示-背景切图
-    this._buildAnimation().create(this.bgShow).play();
-    // this.bgShow.style.backgroundImage = `url(${this.imageURL[1]})`;
-    // this.bgShow.style.opacity = '1';
-    // this.bgTransition.style.backgroundImage = `url(${this.imageURL[2]})`;
+    this.bgChangeAnimate = this._buildAnimation().create(this.bgShow);
     setInterval(() => {
       this.changeBg();
     }, 2000);
+  }
+
+  changeBg() {
+    // 背景切换策略：先做动画-前景切图-前景显示-背景切图
+    this.bgChangeAnimate.play();
+    setTimeout(() => {
+      this.bgShow.style.backgroundImage = `url(${this.imageURL[this.i]})`;
+    }, 1000);
+    setTimeout(() => {
+      this.i++;
+      this.i %= this.imageURL.length;
+      this.bgTransition.style.backgroundImage = `url(${this.imageURL[this.i]})`;
+    }, 2000);
+  }
+
+  private _buildAnimation() {
+    return this._builder.build([
+      animate('1000ms ease-out', style({
+        opacity: 0
+      }))
+    ]);
   }
 
   cleanID() {
@@ -62,24 +81,5 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.errorHint = '';
-  }
-
-  changeBg() {
-    this._buildAnimation().create(this.bgShow).play();
-    this.i++;
-    this.i %= this.imageURL.length;
-    this.bgShow.style.backgroundImage = `url(${this.imageURL[this.i]})`;
-    this.bgShow.style.opacity = '1';
-    this.i++;
-    this.i %= this.imageURL.length;
-    this.bgTransition.style.backgroundImage = `url(${this.imageURL[2]})`;
-  }
-
-  private _buildAnimation() {
-    return this._builder.build([
-      animate('1000ms ease-out', style({
-        opacity: 0
-      }))
-    ]);
   }
 }
